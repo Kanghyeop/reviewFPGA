@@ -10,8 +10,7 @@ module top #(
 	parameter CNT_BIT = 31,
 	parameter integer C_S00_AXI_DATA_WIDTH	= 32,
 	parameter integer C_S00_AXI_ADDR_WIDTH	= 4
-) 
-(
+) (
 	input wire  s00_axi_aclk,
 	input wire  s00_axi_aresetn,
 	input wire [C_S00_AXI_ADDR_WIDTH-1 : 0] s00_axi_awaddr,
@@ -35,13 +34,26 @@ module top #(
 	input wire  s00_axi_rready
 );
 
+    //fsm
+	wire  				w_run;
+	wire [CNT_BIT-1:0]	w_num_cnt;
+	wire   				w_idle;
+	wire   				w_running;
+	wire    			w_done;
+
 // Instantiation of Axi Bus Interface S00_AXI
 myip_v1_0 #(
     .CNT_BIT(CNT_BIT),
     .C_S00_AXI_DATA_WIDTH(C_S00_AXI_DATA_WIDTH),
     .C_S00_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
 ) myip_v1_0_inst(
-    // axi of myip
+    //fsm
+    .o_run		(w_run),
+    .o_num_cnt	(w_num_cnt),
+    .i_idle		(w_idle),
+    .i_running	(w_running),
+    .i_done		(w_done),
+    //axi
     .s00_axi_aclk	(s00_axi_aclk	),
     .s00_axi_aresetn(s00_axi_aresetn),
     .s00_axi_awaddr	(s00_axi_awaddr	),
@@ -63,6 +75,18 @@ myip_v1_0 #(
     .s00_axi_rresp	(s00_axi_rresp	),
     .s00_axi_rvalid	(s00_axi_rvalid	),
     .s00_axi_rready	(s00_axi_rready	)
+);
+
+fsm_counter 
+#(	.CNT_BIT   (CNT_BIT))
+fsm_counter_inst(
+    .clk			(s00_axi_aclk),
+    .reset_n		(s00_axi_aresetn),
+    .i_run			(w_run),
+    .i_num_cnt		(w_num_cnt),
+    .o_idle			(w_idle),
+    .o_running		(w_running),
+    .o_done			(w_done)
 );
 
 endmodule

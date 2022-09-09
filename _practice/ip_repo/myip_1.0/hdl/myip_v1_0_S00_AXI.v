@@ -4,8 +4,9 @@
 	module myip_v1_0_S00_AXI #
 	(
 		// Users to add parameters here
+		parameter CNT_BIT = 31,
 
-		// User parameters ends
+		// User parameters ends [edited by hyeop]
 		// Do not modify the parameters beyond this line
 
 		// Width of S_AXI data bus
@@ -15,8 +16,13 @@
 	)
 	(
 		// Users to add ports here
+		output wire					o_run,
+		output wire [CNT_BIT-1:0]	o_num_cnt, 
+		input  wire 				i_idle,
+		input  wire 				i_running,
+		input  wire 				i_done,
 
-		// User ports ends
+		// User ports ends [edited by hyeop]
 		// Do not modify the ports beyond this line
 
 		// Global Clock Signal
@@ -220,10 +226,10 @@
 	begin
 	  if ( S_AXI_ARESETN == 1'b0 )
 	    begin
-	      slv_reg0 <= 0;
-	      slv_reg1 <= 0;
-	      slv_reg2 <= 0;
-	      slv_reg3 <= 0;
+	      slv_reg0 <= 0; // control register
+	      // slv_reg1 <= 0; // status register
+	      // slv_reg2 <= 0; // not use now
+	      // slv_reg3 <= 0; // not use now [edited by hyeop]
 	    end 
 	  else begin
 	    if (slv_reg_wren)
@@ -236,7 +242,7 @@
 	                // Slave register 0
 	                slv_reg0[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
 	              end  
-	          2'h1:
+	          /* 2'h1:
 	            for ( byte_index = 0; byte_index <= (C_S_AXI_DATA_WIDTH/8)-1; byte_index = byte_index+1 )
 	              if ( S_AXI_WSTRB[byte_index] == 1 ) begin
 	                // Respective byte enables are asserted as per write strobes 
@@ -256,12 +262,12 @@
 	                // Respective byte enables are asserted as per write strobes 
 	                // Slave register 3
 	                slv_reg3[(byte_index*8) +: 8] <= S_AXI_WDATA[(byte_index*8) +: 8];
-	              end  
+	              end  */// not use now. [edited by hyeop]
 	          default : begin
 	                      slv_reg0 <= slv_reg0;
-	                      slv_reg1 <= slv_reg1;
-	                      slv_reg2 <= slv_reg2;
-	                      slv_reg3 <= slv_reg3;
+	                      //slv_reg1 <= slv_reg1;
+	                      //slv_reg2 <= slv_reg2;
+	                      //slv_reg3 <= slv_reg3; [edited by hyeop]
 	                    end
 	        endcase
 	      end
@@ -398,7 +404,54 @@
 	end    
 
 	// Add user logic here
+	
+	////////////////
+	
+	wire reset_n = S_AXI_ARESETN;
+	wire clk = S_AXI_ACLK;
+	
+	////////////////
+	// (slv_reg0)&(o_run)&(o_num_cnt) ctrl
+	
+	reg r_run;
 
-	// User logic ends
+	always @(posedge clk) begin 
+    	if(!reset_n) begin // sync reset_n
+    	    r_run <= 1'b0;  
+    	end else begin
+            r_run <= slv_reg0[CNT_BIT];
+		end 
+	end
+	
+	assign o_run 		= (r_run == 1'b0) && (slv_reg0[CNT_BIT] == 1'b1) ;
+	assign o_num_cnt 	= slv_reg0[CNT_BIT-1:0];
+	
+	////////////////
+	// (slv_reg1)&(status) ctrl
+	
+	reg r_done;
+
+	always @(posedge clk) begin
+    	if(!reset_n) begin 
+    	    r_done <= 1'b0;  
+    	end else if (i_done) begin
+    	    r_done <= 1'b1;
+		end else if (o_run) begin
+			r_done <= 1'b0;
+		end  
+	// else. keep status
+	end
+
+	always @(posedge clk) begin
+	   if(!reset_n) begin
+	       slv_reg1 <= 32'b0;
+	   end else begin
+	       slv_reg1[0] <= i_idle;
+	       slv_reg1[1] <= i_running;
+	       slv_reg1[2] <= r_done;
+	   end
+	end
+
+	// User logic ends [edited by hyeop]
 
 	endmodule

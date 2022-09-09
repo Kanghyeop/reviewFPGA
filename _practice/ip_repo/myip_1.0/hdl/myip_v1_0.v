@@ -4,10 +4,9 @@
 	module myip_v1_0 #
 	(
 		// Users to add parameters here
-
+        parameter CNT_BIT = 31,
 		// User parameters ends
 		// Do not modify the parameters beyond this line
-
 
 		// Parameters of Axi Slave Bus Interface S00_AXI
 		parameter integer C_S00_AXI_DATA_WIDTH	= 32,
@@ -15,10 +14,13 @@
 	)
 	(
 		// Users to add ports here
-
+		output 					o_run,
+		output  [CNT_BIT-1:0]	o_num_cnt, 
+		input   				i_idle,
+		input   				i_running,
+		input					i_done,
 		// User ports ends
 		// Do not modify the ports beyond this line
-
 
 		// Ports of Axi Slave Bus Interface S00_AXI
 		input wire  s00_axi_aclk,
@@ -48,6 +50,13 @@
 		.C_S_AXI_DATA_WIDTH(C_S00_AXI_DATA_WIDTH),
 		.C_S_AXI_ADDR_WIDTH(C_S00_AXI_ADDR_WIDTH)
 	) myip_v1_0_S00_AXI_inst (
+	     //fsm
+		.o_run		(o_run),
+		.o_num_cnt	(o_num_cnt),
+		.i_idle		(i_idle),
+		.i_running	(i_running),
+		.i_done		(i_done),
+	     //axi
 		.S_AXI_ACLK(s00_axi_aclk),
 		.S_AXI_ARESETN(s00_axi_aresetn),
 		.S_AXI_AWADDR(s00_axi_awaddr),
