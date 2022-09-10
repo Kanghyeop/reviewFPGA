@@ -2,10 +2,10 @@
 # Vivado v2021.2 (64-bit)
 # SW Build 3367213 on Tue Oct 19 02:48:09 MDT 2021
 # IP Build 3369179 on Thu Oct 21 08:25:16 MDT 2021
-# Start of session at: Sat Sep 10 22:18:45 2022
-# Process ID: 3184
+# Start of session at: Sat Sep 10 21:15:03 2022
+# Process ID: 28096
 # Current directory: C:/dev/fpga_proj/_review_matbi/_practice/axi4lite_fsm/axi4lite_fsm_ip
-# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent30116 C:\dev\fpga_proj\_review_matbi\_practice\axi4lite_fsm\axi4lite_fsm_ip\axi4lite_fsm_ip.xpr
+# Command line: vivado.exe -gui_launcher_event rodinguilauncherevent3884 C:\dev\fpga_proj\_review_matbi\_practice\axi4lite_fsm\axi4lite_fsm_ip\axi4lite_fsm_ip.xpr
 # Log file: C:/dev/fpga_proj/_review_matbi/_practice/axi4lite_fsm/axi4lite_fsm_ip/vivado.log
 # Journal file: C:/dev/fpga_proj/_review_matbi/_practice/axi4lite_fsm/axi4lite_fsm_ip\vivado.jou
 # Running On: DESKTOP-UK50EEK, OS: Windows, CPU Frequency: 3693 MHz, CPU Physical cores: 12, Host memory: 17103 MB
@@ -35,4 +35,4 @@ INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/dev/fpga_proj/_review_matb
 INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2021.2/data/ip'.
 update_compile_order -fileset sources_1
 exit
-INFO: [Common 17-206] Exiting Vivado at Sat Sep 10 22:19:48 2022...
+INFO: [Common 17-206] Exiting Vivado at Sat Sep 10 22:18:24 2022...
