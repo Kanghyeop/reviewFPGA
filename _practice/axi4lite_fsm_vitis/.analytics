@@ -1,0 +1,11 @@
+timestamp=[2022-09-10 00:25:45], mode=WORKBENCH_START, duration=0:00:04.765, duration_ms=4765, data={}
+timestamp=[2022-09-10 00:25:45], mode=WORKBENCH_UI_INIT, duration=0:00:00.280, duration_ms=280, data={editors_count=0, platform_editors_count=0, projects_count=0, platform_projects_count=0, active_platform_editor=false, projects=}
+timestamp=[2022-09-10 00:25:46], mode=PLATFORM_REPOSITORY_INIT, duration=0:00:00.050, duration_ms=50, data={}
+timestamp=[2022-09-10 00:26:46], mode=APP_CREATION, duration=0:00:15.243, duration_ms=15243, data={name=axi4lite_fsm_app, project_type=sdk, os=standalone, processor=ps7_cortexa9, runtime=cpp, platform=design_1_wrapper, application_type=application}
+timestamp=[2022-09-10 00:27:36], mode=PLATFORM_GENERATION, duration=0:00:09.801, duration_ms=9801, data={name=design_1_wrapper}
+timestamp=[2022-09-10 00:27:37], mode=BUILD, duration=0:00:00.387, duration_ms=387, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}
+timestamp=[2022-09-10 00:32:57], mode=BUILD, duration=0:00:00.609, duration_ms=609, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}
+timestamp=[2022-09-10 19:57:19], mode=BUILD, duration=0:00:00.676, duration_ms=676, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}
+timestamp=[2022-09-10 19:57:54], mode=BUILD, duration=0:00:00.748, duration_ms=748, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}
+timestamp=[2022-09-10 19:58:50], mode=BUILD, duration=0:00:00.501, duration_ms=501, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}
+timestamp=[2022-09-10 20:03:14], mode=BUILD, duration=0:00:00.563, duration_ms=563, data={name=axi4lite_fsm_app, configuration=Debug, clean_build=false}

@@ -1,0 +1,114 @@
+//////////////////////////////////////////////////////////////////////////////////
+// Company: Personal
+// Engineer: Matbi / Austin
+//
+// Create Date:
+// Design Name:
+// Project Name:
+// Target Devices:
+// Tool Versions:
+// Description: test fsm_ctrl. Check to HW Sleep Function
+//
+// Dependencies:
+//
+// Revision:
+// Revision 0.01 - File Created
+// Additional Comments:
+//
+//////////////////////////////////////////////////////////////////////////////////
+ 
+#include <stdio.h>
+#include "xparameters.h"
+#include "xil_io.h"
+#include "xtime_l.h"  // To measure of processing time
+
+#define WRITE 1
+#define READ 2
+#define AXI_DATA_BYTE 4
+ 
+#define IDLE 1
+#define RUN 1 << 1
+#define DONE 1 << 2
+
+#define CTRL_REG 0
+#define STATUS_REG 1
+
+int main() {
+    int data;
+    int read_data;
+    int reg_num;
+    XTime tStart, tEnd;
+    while (1) {
+    	printf("======= Hello Lab10 Matbi ======\n");
+    	printf("plz input run mode\n");
+    	printf("1. write (CTRL) \n");
+    	printf("2. read (REG) \n");
+    	scanf("%d",&data);
+
+    	if(data == WRITE){
+    		Xil_Out32((XPAR_LAB10_MATBI_0_BASEADDR) + (CTRL_REG*AXI_DATA_BYTE), (u32)(0x00000000)); // Clear
+    		printf("plz input Value 31bit. MSB is the run signal\n");
+    		scanf("%d",&data);
+
+    		printf("Test SW uSleep\n");
+    		XTime_GetTime(&tStart);
+    		usleep(data/100);
+    		XTime_GetTime(&tEnd);
+    		printf("Output took %llu clock cycles.\n", 2*(tEnd - tStart));
+    		printf("Output took %.2f us.\n",
+    		       1.0 * (tEnd - tStart) / (COUNTS_PER_SECOND/1000000));
+
+    		// check IDLE
+    		do{
+    			read_data = Xil_In32((XPAR_LAB10_MATBI_0_BASEADDR) + (STATUS_REG*AXI_DATA_BYTE));
+    		} while( (read_data & IDLE) != IDLE);
+    		// start core
+    		printf("LAB10_MATBI_0 Start\n");
+    		Xil_Out32((XPAR_LAB10_MATBI_0_BASEADDR) + (CTRL_REG*AXI_DATA_BYTE), (u32)(data | 0x80000000)); // MSB run
+    		XTime_GetTime(&tStart);
+    		// wait done
+    		do{
+    			read_data = Xil_In32((XPAR_LAB10_MATBI_0_BASEADDR) + (STATUS_REG*AXI_DATA_BYTE));
+    		} while( (read_data & DONE) != DONE );
+    		XTime_GetTime(&tEnd);
+    		printf("LAB10_MATBI_0 Done\n");
+    		printf("Output took %llu clock cycles.\n", 2*(tEnd - tStart));
+    		printf("Output took %.2f us.\n",
+    		       1.0 * (tEnd - tStart) / (COUNTS_PER_SECOND/1000000));
+
+    		Xil_Out32((XPAR_LAB10_MATBI_1_BASEADDR) + (CTRL_REG*AXI_DATA_BYTE), (u32)(0x00000000)); // Clear
+    		// check IDLE
+    		do{
+    			read_data = Xil_In32((XPAR_LAB10_MATBI_1_BASEADDR) + (STATUS_REG*AXI_DATA_BYTE));
+    		} while( (read_data & IDLE) != IDLE);
+    		// start core
+    		printf("LAB10_MATBI_1 Start\n");
+    		Xil_Out32((XPAR_LAB10_MATBI_1_BASEADDR) + (CTRL_REG*AXI_DATA_BYTE), (u32)(data | 0x80000000)); // MSB run
+    		XTime_GetTime(&tStart);
+    		// wait done
+    		do{
+    			read_data = Xil_In32((XPAR_LAB10_MATBI_1_BASEADDR) + (STATUS_REG*AXI_DATA_BYTE));
+    		} while( (read_data & DONE) != DONE );
+    		XTime_GetTime(&tEnd);
+    		printf("LAB10_MATBI_1 Done\n");
+    		printf("Output took %llu clock cycles.\n", 2*(tEnd - tStart));
+    		printf("Output took %.2f us.\n",
+    		       1.0 * (tEnd - tStart) / (COUNTS_PER_SECOND/1000000));
+
+    	} else if (data == READ){
+    		printf("plz input READ reg number (0~3)\n");
+    		scanf("%d",&reg_num);
+    		read_data = Xil_In32((XPAR_LAB10_MATBI_0_BASEADDR) + (reg_num*AXI_DATA_BYTE));
+    		printf("LAB10_MATBI_0 REG read done reg_number (%d), value : %d\n", reg_num, read_data & 0x7FFFFFFF); // no check run val
+    		read_data = Xil_In32((XPAR_LAB10_MATBI_1_BASEADDR) + (reg_num*AXI_DATA_BYTE));
+    		printf("LAB10_MATBI_1 REG read done reg_number (%d), value : %d\n", reg_num, read_data & 0x7FFFFFFF);
+    	} else {
+    		// no operation, exit
+    		//break;
+    	}
+    }
+    return 0;
+}
+
+
+

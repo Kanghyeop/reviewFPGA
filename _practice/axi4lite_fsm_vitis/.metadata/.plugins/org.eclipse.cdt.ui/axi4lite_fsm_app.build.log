@@ -1,0 +1,25 @@
+20:03:13 **** Incremental Build of configuration Debug for project axi4lite_fsm_app ****
+make all 
+make --no-print-directory pre-build
+a9-linaro-pre-build-step
+' '
+make --no-print-directory main-build
+'Building file: ../src/lab10_main.c'
+'Invoking: ARM v7 gcc compiler'
+arm-none-eabi-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/lab10_main.o" -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -IC:/dev/fpga_proj/_review_matbi/_practice/axi4lite_fsm_vitis/design_1_wrapper/export/design_1_wrapper/sw/design_1_wrapper/standalone_ps7_cortexa9_0/bspinclude/include -MMD -MP -MF"src/lab10_main.d" -MT"src/lab10_main.o" -o "src/lab10_main.o" "../src/lab10_main.c"
+'Finished building: ../src/lab10_main.c'
+' '
+'Building target: axi4lite_fsm_app.elf'
+'Invoking: ARM v7 gcc linker'
+arm-none-eabi-gcc -mcpu=cortex-a9 -mfpu=vfpv3 -mfloat-abi=hard -Wl,-build-id=none -specs=Xilinx.spec -Wl,-T -Wl,../src/lscript.ld -LC:/dev/fpga_proj/_review_matbi/_practice/axi4lite_fsm_vitis/design_1_wrapper/export/design_1_wrapper/sw/design_1_wrapper/standalone_ps7_cortexa9_0/bsplib/lib -o "axi4lite_fsm_app.elf"  ./src/lab10_main.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: axi4lite_fsm_app.elf'
+' '
+'Invoking: ARM v7 Print Size'
+arm-none-eabi-size axi4lite_fsm_app.elf  |tee "axi4lite_fsm_app.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+  78286	   2550	  22640	 103476	  19434	axi4lite_fsm_app.elf
+'Finished building: axi4lite_fsm_app.elf.size'
+' '
+
+20:03:14 Build Finished (took 556ms)
+
